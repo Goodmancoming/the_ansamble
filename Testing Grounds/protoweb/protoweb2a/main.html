@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>☕️ Cafe OOP</title>
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="main.js" defer></script>
+</head>
+<body>
+  <header>
+    <h1>☕️ Welcome to OOP Cafe</h1>
+  </header>
+
+  <main>
+    <section id="menu" class="grid"></section>
+
+    <aside id="admin" class="admin-panel">
+      <h2>Add a Menu Item</h2>
+      <form id="addForm">
+        <label>
+          Category:
+          <select id="itemType">
+            <option value="drink">Drink</option>
+            <option value="food">Food</option>
+          </select>
+        </label>
+        <label>Name:<input type="text" id="itemName" required></label>
+        <label>Price:<input type="number" id="itemPrice" step="0.01" required></label>
+        <label>Description:<input type="text" id="itemDesc"></label>
+        <label>Image URL:<input type="text" id="itemImage"></label>
+        <button type="submit">Add Item</button>
+      </form>
+    </aside>
+  </main>
+
+  <footer>
+    <p>© 2025 OOP Cafe. All Rights Reserved.</p>
+  </footer>
+</body>
+</html>

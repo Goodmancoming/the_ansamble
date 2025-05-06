@@ -1,0 +1,69 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Trayek Edun</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        #container {
+            width: 50%;
+            margin: auto;
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <label for="input-area">Trayek:</label>
+        <textarea id="input-area" placeholder="Masukkan data, pisahkan dengan koma"></textarea>
+        <br>
+        <button onclick="generateTable()">Generate</button>
+        <table id="trayek-table">
+            <thead>
+                <tr>
+                    <th>Trayek</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <script>
+        function generateTable() {
+            const inputText = document.getElementById("input-area").value;
+            const trayekList = inputText.split(",");
+            const tableBody = document.querySelector("#trayek-table tbody");
+            
+            tableBody.innerHTML = ""; 
+
+            trayekList.forEach(trayek => {
+                const cleanedTrayek = trayek.trim();
+                if (cleanedTrayek) {
+                    const [origin, destination] = cleanedTrayek.split(" ");
+                    const row = tableBody.insertRow();
+                    const cell = row.insertCell();
+                    cell.textContent = `${origin} - ${destination}`;
+                }
+            });
+        }
+    </script>
+</body>
+</html>
+projek 22.html
+
+Displaying projek 22.html.

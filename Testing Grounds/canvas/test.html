@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Neon Chaos Canvas</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden; /* Fullscreen canvas */
+            background: black; /* Space-like background */
+        }
+
+        #controls {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            z-index: 10;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Chaos Controls -->
+    <div id="controls">
+        <label>Size: <input type="range" id="brushSize" min="5" max="100" value="30"></label>
+        <button id="clearCanvas">Clear</button>
+    </div>
+
+    <canvas id="neonCanvas"></canvas>
+
+    <script>
+        const canvas = document.getElementById("neonCanvas");
+        const ctx = canvas.getContext("2d");
+
+        // Resize canvas to full window
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener("resize", resizeCanvas);
+        resizeCanvas();
+
+        // Controls
+        const brushSize = document.getElementById("brushSize");
+        const clearCanvas = document.getElementById("clearCanvas");
+
+        // Variables
+        let drawing = false;
+        let lastX = 0, lastY = 0;
+
+        // Helper: Random number generator
+        function random(min, max) {
+            return Math.random() * (max - min) + min;
+        }
+
+        // Color Chaos Generator (smooth color cycling)
+        let hue = 0;
+        function getNextColor() {
+            hue = (hue + 1) % 360; // Loop through 360 degrees
+            return `hsl(${hue}, 100%, 70%)`;
+        }
+
+        // Start drawing
+        function startDrawing(e) {
+            drawing = true;
+            [lastX, lastY] = [e.clientX, e.clientY];
+            sparkExplosion(e.clientX, e.clientY); // Big spark burst on click
+        }
+
+        // Stop drawing
+        function stopDrawing() {
+            drawing = false;
+        }
+
+        // Spark Explosion (Chaos Burst)
+        function sparkExplosion(x, y) {
+            for (let i = 0; i < 100; i++) {
+                const angle = random(0, Math.PI * 2);
+                const speed = random(20, 100);
+                const size = random(4, 14);
+
+                const sparkX = x + Math.cos(angle) * speed;
+                const sparkY = y + Math.sin(angle) * speed;
+
+                ctx.beginPath();
+                ctx.arc(sparkX, sparkY, size, 0, Math.PI * 2);
+                ctx.fillStyle = getNextColor();
+                ctx.shadowBlur = random(10, 40);
+                ctx.shadowColor = getNextColor();
+                ctx.fill();
+            }
+        }
+
+        // Draw function (with jitter and chaos)
+        function draw(e) {
+            if (!drawing) return;
+
+            // Fade the canvas slightly for the trail effect
+            ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            const currentColor = getNextColor();
+
+            for (let i = 0; i < 3; i++) { // Multi-trail chaos
+                ctx.beginPath();
+                ctx.moveTo(lastX + random(-25, 25), lastY + random(-25, 25)); // Random jitter
+                ctx.lineTo(e.clientX + random(-25, 25), e.clientY + random(-25, 25));
+                ctx.strokeStyle = currentColor;
+                ctx.lineWidth = brushSize.value;
+                ctx.lineCap = "round";
+                ctx.shadowBlur = random(30, 80);
+                ctx.shadowColor = currentColor;
+                ctx.stroke();
+            }
+
+            [lastX, lastY] = [e.clientX, e.clientY];
+
+            // Random small sparks along the path
+            if (Math.random() > 0.001) {
+                createSpark(e.clientX, e.clientY);
+            }
+        }
+
+        // Small spark generator
+        function createSpark(x, y) {
+            for (let i = 0; i < 5; i++) {
+                const angle = random(0, Math.PI * 20);
+                const speed = random(100, 250);
+                const size = random(3, 6);
+
+                const sparkX = x + Math.cos(angle) * speed;
+                const sparkY = y + Math.sin(angle) * speed;
+
+                ctx.beginPath();
+                ctx.arc(sparkX, sparkY, size, 0, Math.PI * 2);
+                ctx.fillStyle = getNextColor();
+                ctx.shadowBlur = random(10, 30);
+                ctx.shadowColor = getNextColor();
+                ctx.fill();
+            }
+        }
+
+        // Event listeners
+        canvas.addEventListener("mousedown", startDrawing);
+        canvas.addEventListener("mousemove", draw);
+        canvas.addEventListener("mouseup", stopDrawing);
+        canvas.addEventListener("mouseout", stopDrawing);
+
+        // Clear the chaos
+        clearCanvas.addEventListener("click", () => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        });
+    </script>
+
+</body>
+
+</html>

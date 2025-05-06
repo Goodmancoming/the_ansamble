@@ -1,0 +1,10 @@
+.speciment_container{
+    width: 95%;
+    height: auto;
+    padding: 1rem;
+    border: 1px solid white;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    margin-left: auto;
+    margin-right: auto;
+}
